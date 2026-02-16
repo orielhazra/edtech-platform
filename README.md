@@ -9,7 +9,7 @@ reviews, and role-based access control.
   --------------------
 
 1.  Clone Repository git clone
-    https://github.com/yourusername/edtech-platform.git cd
+    https://github.com/orielhazra/edtech-platform.git cd
     edtech-platform
 
 2.  Install Dependencies composer install
