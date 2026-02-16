@@ -1,59 +1,78 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+EdTech Platform – LMS API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A RESTful Learning Management System (LMS) API built with Laravel 11 and
+JWT authentication. Supports course management, lessons, enrollments,
+reviews, and role-based access control.
 
-## About Laravel
+  --------------------
+  SETUP INSTRUCTIONS
+  --------------------
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1.  Clone Repository git clone
+    https://github.com/yourusername/edtech-platform.git cd
+    edtech-platform
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+2.  Install Dependencies composer install
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+3.  Create Environment File cp .env.example .env
 
-## Learning Laravel
+    Update .env with: APP_NAME=EdTechPlatform APP_ENV=local
+    APP_DEBUG=true APP_URL=http://localhost
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+    DB_CONNECTION=mysql DB_HOST=127.0.0.1 DB_PORT=3306
+    DB_DATABASE=edtech_db DB_USERNAME=root DB_PASSWORD=
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+4.  Generate Application Key php artisan key:generate
 
-## Laravel Sponsors
+5.  Run Migrations php artisan migrate
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+6.  Start Development Server php artisan serve
 
-### Premium Partners
+API base URL: http://localhost:8000/api
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+  -----------------
+  JWT SETUP STEPS
+  -----------------
 
-## Contributing
+1.  Install JWT Package composer require tymon/jwt-auth
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2.  Publish Config php artisan vendor:publish –provider=“Tymon”
 
-## Code of Conduct
+3.  Generate JWT Secret php artisan jwt:secret
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4.  Update config/auth.php
 
-## Security Vulnerabilities
+    ‘defaults’ => [ ‘guard’ => ‘api’, ‘passwords’ => ‘users’,],
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ‘guards’ => [ ‘api’ => [ ‘driver’ => ‘jwt’, ‘provider’ => ‘users’,
+    ],],
 
-## License
+5.  Protect Routes Route::middleware(‘auth:api’)->group(function () {
+    Route::get(‘/auth/me’, [AuthController::class, ‘me’]); });
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+6.  Include Token in Requests Authorization: Bearer {your_token}
+
+  -------------------
+  API FLOW OVERVIEW
+  -------------------
+
+Authentication Flow: Register → Login → Receive JWT Token → Access
+Protected Routes
+
+Course Flow: Instructor creates course → Adds lessons → Students enroll
+→ Students review
+
+Enrollment Flow: Student logs in → Enrolls in course → Access lessons
+
+  ------------------------
+  USER ROLES EXPLANATION
+  ------------------------
+
+ADMIN - Full system access - Manage all courses - Manage users Role
+value: admin
+
+INSTRUCTOR - Create and manage own courses - Add/edit lessons - View
+enrollments Role value: instructor
+
+STUDENT - View courses - Enroll in courses - Access lessons - Leave
+reviews Role value: student
