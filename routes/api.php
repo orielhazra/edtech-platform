@@ -26,6 +26,16 @@ Route::prefix('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| Courses
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/courses/{course}', [CourseController::class, 'show']);
+Route::get('/courses/{course}/reviews', [ReviewController::class, 'index']);
+
+/*
+|--------------------------------------------------------------------------
 | Protected API Routes (JWT Required)
 |--------------------------------------------------------------------------
 */
@@ -48,17 +58,6 @@ Route::middleware('auth:api')->group(function () {
         'token' => auth()->refresh()
     ]);
     });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Courses
-    |--------------------------------------------------------------------------
-    */
-
-    Route::get('/courses', [CourseController::class, 'index']);
-    Route::get('/courses/{course}', [CourseController::class, 'show']);
-    Route::get('/courses/{course}/reviews', [ReviewController::class, 'index']);
     
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +90,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::middleware('role:student')->group(function () {
 
-        Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'store']);
+        Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'enroll']);
         Route::get('/my-courses', [EnrollmentController::class, 'myCourses']);
 
         Route::post('/courses/{course}/review', [ReviewController::class, 'store'])

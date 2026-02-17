@@ -25,7 +25,7 @@ class EnrollmentController extends Controller
     {
         $user = Auth::user();
 
-        // Role check
+        // Role check (in case no middleware)
         if ($user->role !== 'student') {
             return response()->json([
                 'status' => false,

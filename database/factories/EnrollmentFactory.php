@@ -16,9 +16,10 @@ class EnrollmentFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
-     */
-    protected $model = Enrollment::class;
-    
+     
+    *   protected $model = Enrollment::class;
+    */
+
     public function definition(): array
     {
         return [

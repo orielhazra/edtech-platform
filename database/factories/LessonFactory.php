@@ -15,9 +15,10 @@ class LessonFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
-     */
-    protected $model = Lesson::class;
-    
+     *
+     *  protected $model = Lesson::class;
+    */
+
     public function definition(): array
     {
         return [

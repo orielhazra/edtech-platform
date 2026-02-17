@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('enrolled_at')->nullable();
             $table->enum('status',['active','completed'])->default('active');
             $table->unique(['user_id','course_id']);
+            $table->timestamps();
         });
     }
 

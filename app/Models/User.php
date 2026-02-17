@@ -24,6 +24,11 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var list<string>
      */
+
+    const ROLE_ADMIN = 'admin';
+    const ROLE_INSTRUCTOR = 'instructor';
+    const ROLE_STUDENT = 'student';
+
     protected $fillable = [
         'name',
         'email',
@@ -88,6 +93,21 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return []; // Add any custom data you want to include in the token payload
+    }
+    
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isInstructor(): bool
+    {
+        return $this->role === self::ROLE_INSTRUCTOR;
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->role === self::ROLE_STUDENT;
     }
     
 }

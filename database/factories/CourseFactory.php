@@ -15,9 +15,9 @@ class CourseFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
-     */
-    protected $model = Course::class;
-    
+     *
+     *  protected $model = Course::class;
+    */
     public function definition(): array
     {
         return [

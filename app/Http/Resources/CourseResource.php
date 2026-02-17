@@ -19,6 +19,7 @@ class CourseResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
+            'level' => $this->level,
 
             /*
             |--------------------------------------------------------------------------
@@ -26,9 +27,9 @@ class CourseResource extends JsonResource
             |--------------------------------------------------------------------------
             */
             'instructor' => [
-                'id' => $this->user?->id,
-                'name' => $this->user?->name,
-                'email' => $this->user?->email,
+                'id' => $this->instructor?->id,
+                'name' => $this->instructor?->name,
+                'email' => $this->instructor?->email,
             ],
 
             /*

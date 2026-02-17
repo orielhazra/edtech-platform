@@ -13,7 +13,7 @@ use App\Policies\CoursePolicy;
 use App\Policies\LessonPolicy;
 use App\Policies\ReviewPolicy;
 
-class AuthServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
 {
     /**
      * The policy mappings for the application.
@@ -26,29 +26,5 @@ class AuthServiceProvider extends ServiceProvider
         Review::class => ReviewPolicy::class,
     ];
 
-    /**
-     * Register any authentication / authorization services.
-     */
-    public function boot(): void
-    {
-        $this->registerPolicies();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Role-Based Gates
-        |--------------------------------------------------------------------------
-        */
-
-        Gate::define('isAdmin', function ($user) {
-            return $user->role === 'admin';
-        });
-
-        Gate::define('isInstructor', function ($user) {
-            return $user->role === 'instructor';
-        });
-
-        Gate::define('isStudent', function ($user) {
-            return $user->role === 'student';
-        });
-    }
+    
 }

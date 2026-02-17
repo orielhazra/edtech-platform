@@ -3,7 +3,9 @@
 @section('content')
 <h3>Courses</h3>
 
-<button class="btn btn-sm btn-dark" onclick="dashboard()">Dashboard</button>
+
+<button id="dashboardBtn" class="btn btn-sm btn-dark d-none" onclick="dashboard()">Dashboard</button>
+
 
 <input type="text" id="search" class="form-control mb-2" placeholder="Search course...">
 
@@ -40,6 +42,15 @@ loadCourses();
 function dashboard() {
     window.location.href = "/dashboard";
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const token = localStorage.getItem('token');
+    if (token) {
+        // User logged in
+        document.getElementById('dashboardBtn').classList.remove('d-none');
+    }
+});
+
 
 </script>
 @endpush

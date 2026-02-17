@@ -10,14 +10,15 @@ class OwnsCourse
 {
     public function handle(Request $request, Closure $next)
     {
-        $courseId = $request->route('course');
+        $course = $request->route('course');
 
-        $course = Course::find($courseId);
+        if (!($course instanceof \App\Models\Course)) {
+            // fallback if route binding didn't happen for some reason
+            $course = \App\Models\Course::find($course);
+        }
 
         if (!$course) {
-            return response()->json([
-                'message' => 'Course not found'
-            ], 404);
+            return response()->json(['message' => 'Course not found'], 404);
         }
 
         if (auth()->user()->role === 'admin') {
@@ -25,11 +26,10 @@ class OwnsCourse
         }
 
         if ($course->instructor_id !== auth()->id()) {
-            return response()->json([
-                'message' => 'Forbidden: not your course'
-            ], 403);
+            return response()->json(['message' => 'Forbidden: not your course'], 403);
         }
 
         return $next($request);
     }
+
 }

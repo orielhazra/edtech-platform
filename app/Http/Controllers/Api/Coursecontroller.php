@@ -93,7 +93,7 @@ class CourseController extends Controller
         $this->authorize('update', $course);
 
         $validated = $request->validate([
-            'title'       => 'sometimes|string|max:255',
+            'title'       => 'required|string|max:255',
             'description' => 'sometimes|string',
             'price'       => 'sometimes|numeric|min:0',
             'level'       => 'sometimes|in:beginner,intermediate,advanced',

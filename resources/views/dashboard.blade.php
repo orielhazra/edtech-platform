@@ -12,7 +12,7 @@
 </div>
 
 <div id="instructorSection" class="d-none">
-    <h4>Your Courses</h4>
+    <h4>My Courses</h4>
     <button class="btn btn-secondary" onclick="createnew()">Create New</button>
     <div id="instructorCourses"></div>
 </div>
@@ -44,7 +44,7 @@ function loadDashboard() {
             }
 
             if (user.role === 'instructor') {
-                loadInstructor();
+                loadInstructor(user.id);
             }
 
             if (user.role === 'student') {
@@ -67,19 +67,25 @@ function loadAdmin() {
         });
 }
 
-function loadInstructor() {
+function loadInstructor(currentUserId) {
     document.getElementById('instructorSection').classList.remove('d-none');
 
+    
     axios.get('/courses')
         .then(res => {
 
             let html = '';
 
             res.data.data.forEach(course => {
-                if (course.instructor === document.querySelector('#userInfo strong').innerText) {
+                if (course.instructor.id === currentUserId) {
                     html += `
                         <div class="card p-2 mb-2">
                             <strong>${course.title}</strong>
+                            <a href="/courses/${course.id}" 
+                                class="btn btn-sm btn-primary">
+                                    View
+                            </a>
+
                             <a href="/courses/${course.id}/edit"
                                 class="btn btn-sm btn-warning">
                                 Edit
@@ -109,6 +115,10 @@ function loadStudent() {
                 html += `
                     <div class="card p-2 mb-2">
                         <strong>${course.title}</strong>
+                        <a href="/courses/${course.id}" 
+                                class="btn btn-sm btn-primary">
+                                    View
+                            </a>
                     </div>
                 `;
             });
@@ -124,7 +134,7 @@ function deleteCourse(selectedCourseId) {
 
             alert("Course deleted successfully");
 
-            loadInstructor(); // reload course list
+            loadDashboard(); // reload course list
 
         })
         .catch(err => {
@@ -136,7 +146,7 @@ function deleteCourse(selectedCourseId) {
 loadDashboard();
 
 function createnew() {
-    window.location.href = "/courses/create";
+    window.location.href = "/create";
 }
 
 </script>

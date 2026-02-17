@@ -11,16 +11,9 @@
     <a class="navbar-brand" href="/">EdTech</a>
     <div>
         
-        @if(auth()->check())
-            <button class="btn btn-sm btn-light" onclick="logout()">Logout</button>
-        @elseif(request()->routeIs('login'))
-            <button class="btn btn-sm btn-light" onclick="register()">Register</button>
-        @elseif(request()->routeIs('register'))
-            <button class="btn btn-sm btn-light" onclick="login()">Login</button>
-        @else
-            <button class="btn btn-sm btn-light" onclick="register()">Register</button>
-            <button class="btn btn-sm btn-light" onclick="login()">Login</button>
-        @endif
+        <button id="logoutBtn" class="btn btn-sm btn-light d-none" onclick="logout()">Logout</button>
+        <button id="loginBtn" class="btn btn-sm btn-light" onclick="login()">Login</button>
+        <button id="registerBtn" class="btn btn-sm btn-light" onclick="register()">Register</button>
         
         
     </div>
@@ -58,6 +51,39 @@ function login() {
 function register() {
     window.location.href = "/register";
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const token = localStorage.getItem('token');
+
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+
+    const currentPath = window.location.pathname;
+
+    if (token) {
+        // User logged in
+        logoutBtn.classList.remove('d-none');
+        loginBtn.classList.add('d-none');
+        registerBtn.classList.add('d-none');
+    } else {
+        // User NOT logged in
+        logoutBtn.classList.add('d-none');
+
+        if (currentPath.includes('login')) {
+            loginBtn.classList.add('d-none');
+            registerBtn.classList.remove('d-none');
+        } 
+        else if (currentPath.includes('register')) {
+            registerBtn.classList.add('d-none');
+            loginBtn.classList.remove('d-none');
+        } 
+        else {
+            loginBtn.classList.remove('d-none');
+            registerBtn.classList.remove('d-none');
+        }
+    }
+});
 
 </script>
 

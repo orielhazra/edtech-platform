@@ -16,8 +16,9 @@ class ReviewFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
-     */
-    protected $model = Review::class;
+     *
+     * protected $model = Review::class;
+    */
     
     public function definition(): array
     {
