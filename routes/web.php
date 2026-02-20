@@ -41,3 +41,7 @@ Route::get('/create', function () {
 Route::get('/courses/{id}/edit', function ($id) {
     return view('courses.edit', compact('id'));
 });
+
+Route::get('/courses/{id}/review', function ($id) {
+    return view('courses.review', compact('id'));
+});

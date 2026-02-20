@@ -24,7 +24,14 @@ function loadCourse() {
             });
 
             document.getElementById('courseDetails').innerHTML = `
-                <h3>${c.title}</h3>
+                <div class="d-flex align-items-center">
+                    <h5>${c.title}</h5>
+                    <span class="badge ms-2 
+                        ${c.level === 'beginner' ? 'bg-success' : ''}
+                        ${c.level === 'intermediate' ? 'bg-warning' : ''}
+                        ${c.level === 'advanced' ? 'bg-danger' : ''}
+                    ">${c.level}</span>
+                </div>
                 <h6>By ${c.instructor.name}</h6>
                 <p>${c.description}</p>
                 <ul>${lessonsHtml}</ul>
@@ -52,6 +59,7 @@ function loadAction() {
             if (user.role === 'student') {
                 document.getElementById('courseAction').innerHTML = `
                 <button class="btn btn-success mt-3" onclick="enroll()">Enroll</button>
+                <button class="btn btn-success mt-3" onclick="review()">Review</button>
                 `;
             }
         })
@@ -62,12 +70,13 @@ function loadAction() {
         });
 }
 
-function loadReviews(courseId) {
+function loadReviews() {
     axios.get(`/courses/${courseId}/reviews`)
         .then(res=>{
             const reviews = res.data.data || [];
-
+            
             const container = document.getElementById('reviewsContainer');
+            const addReviewBtn = document.getElementById('addReviewBtn');
             container.innerHTML = '';
 
             if (reviews.length === 0) {
@@ -79,7 +88,11 @@ function loadReviews(courseId) {
                 return;
             }
 
-            reviews.forEach(review => {
+            // Display only the 3 latest reviews
+            const latestReviews = reviews.slice(0, 3);
+            
+            latestReviews.forEach(review => {
+                
                 container.innerHTML += `
                     <div class="card mb-3 shadow-sm">
                         <div class="card-body">
@@ -98,9 +111,10 @@ function loadReviews(courseId) {
                 `;
             });
 
-        }) 
-        .catch(() => {
-            console.error(error);
+        })
+        .catch((e) => {
+            
+            console.error("Error loading reviews.");
             document.getElementById('reviewsContainer').innerHTML = `
                 <div class="alert alert-danger">
                     Failed to load reviews.
@@ -124,9 +138,13 @@ function back() {
     window.location.href = "/dashboard";
 }
 
+function review() {
+    window.location.href = `/courses/${courseId}/review`;
+}
+
 loadCourse();
 loadAction();
-loadReviews(courseId);
+loadReviews();
 
 </script>
 @endpush

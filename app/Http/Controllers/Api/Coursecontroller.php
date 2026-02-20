@@ -24,7 +24,10 @@ class CourseController extends Controller
     */
     public function index(Request $request)
     {
-        $query = Course::with('instructor');
+        $query = Course::query()
+            ->with('instructor')
+            ->withCount(['lessons', 'enrollments'])
+            ->withAvg('reviews', 'rating');
 
         // Search by title
         if ($request->has('search')) {

@@ -48,7 +48,8 @@ class CourseResource extends JsonResource
             */
             'total_lessons' => $this->whenCounted('lessons'),
             'total_enrollments' => $this->whenCounted('enrollments'),
-            'average_rating' => round($this->reviews_avg_rating ?? 0, 2),
+            'average_rating' => number_format($this->reviews()->avg('rating') ?? 0, 1),
+
 
             /*
             |--------------------------------------------------------------------------
